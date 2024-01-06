@@ -13,20 +13,27 @@ import (
 func main() {
 	gameOver := false
 
+	board := [][]string{
+		{"-", "-", "-"},
+		{"-", "-", "-"},
+		{"-", "-", "-"},
+	}
+
+
 	for !gameOver {
 		// print board
+		printBoard(board)
 
 		// get input
 
 		// update board
 
 		// check for win
-		checkWin()
+		gameOver = checkWin()
 
 		// check for draw
 
 		// switch player
-
 	}
 
 	
@@ -35,4 +42,10 @@ func main() {
 
 func checkWin() bool {
 	return true
+}
+
+func printBoard(board [][]string) {
+	for _, row := range board {
+		fmt.Println(row)
+	}
 }
