@@ -21,16 +21,25 @@ func (b *Board) printBoard() {
 	fmt.Println()
 }
 
-func (b *Board) checkWin() bool {
-	return checkRows(b.layout)
-}
-
 func (b *Board) updateBoard(row, col, playerTurn int) {
 	if playerTurn == 1 {
 		b.layout[row-1][col-1] = "X"
 	} else {
 		b.layout[row-1][col-1] = "O"
 	}
+}
+
+func (b *Board) checkWin() bool {
+	if checkRows(b.layout) {
+		return true
+	}
+	if checkColumns(b.layout) {
+		return true
+	}
+	if checkDiagonals(b.layout) {
+		return true
+	}
+	return false
 }
 
 func main() {
@@ -51,7 +60,7 @@ func main() {
 	for !gameOver {
 		// print board
 		board.printBoard()
-		
+
 		// get input
 		var row, col int
 
@@ -94,12 +103,36 @@ func main() {
 	}
 
 	
-	fmt.Println("You win!")
 }
 
 func checkRows(board [][]string) bool {
-	if board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][0] != "-" {
+	for i, _ := range board {
+		if board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][0] != "-" {
+			return true
+		}
+	}
+	
+	return false
+}
+
+// function to check columns
+func checkColumns(board [][]string) bool {
+	for i, _ := range board {
+		if board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[0][i] != "-" {
+			return true
+		}
+	}
+	
+	return false
+}
+
+// function to check diagonals
+func checkDiagonals(board [][]string) bool {
+	if board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != "-" {
 		return true
 	}
-	return false
+	if board[2][0] == board[1][1] && board[1][1] == board[0][2] && board[2][0] != "-" {
+		return true
+	}
+	return false 
 }
