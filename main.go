@@ -43,6 +43,17 @@ func (b *Board) checkWin() bool {
 	return false
 }
 
+func (b *Board) checkDraw() bool {
+	for _, row := range b.layout {
+		for _, col := range row {
+			if col == "-" {
+				return false
+			}
+		}
+	}
+	return true
+}
+
 func main() {
 	gameOver := false
 
@@ -56,14 +67,21 @@ func main() {
 
 	playerTurn := 1
 
-	fmt.Println("Welcome to Tic Tac Go!\n")
+	fmt.Println("\nWelcome to Tic Tac Go!")
 
 	for !gameOver {
+		fmt.Println()
 		board.printBoard()
+
+		if playerTurn == 1 {
+			fmt.Println("It's X's turn")
+		} else {
+			fmt.Println("It's O's turn")
+		}
 
 		row, col := getInput()
 		if board.layout[row-1][col-1] != "-" {
-			fmt.Println("That space is already taken!")
+			fmt.Println("\nThat space is already taken!")
 			continue
 		}
 
@@ -75,7 +93,11 @@ func main() {
 			break
 		}
 
-		// check for draw
+		if board.checkDraw() {
+			board.printBoard()
+			fmt.Println("It's a draw!")
+			break
+		}
 
 		// switch player
 		if playerTurn == 1 {
@@ -128,7 +150,7 @@ func getInput() (int, int) {
         _, err := fmt.Scanf("%s %s", &rowWord, &colWord)
 
         if err != nil {
-            fmt.Println("Invalid input, please enter two words.")
+            fmt.Println("\nInvalid input")
             continue
         }
 
@@ -136,11 +158,11 @@ func getInput() (int, int) {
 		colWord = strings.ToLower(colWord)
 
 		if rowWord != "top" && rowWord != "middle" && rowWord != "bottom" {
-			fmt.Println("Invalid input, please enter two words.")
+			fmt.Println("\nInvalid input")
 			continue
 		}
 		if colWord != "left" && colWord != "middle" && colWord != "right" {
-			fmt.Println("Invalid input, please enter two words.")
+			fmt.Println("\nInvalid input")
 			continue
 		}
 
