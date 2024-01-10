@@ -10,23 +10,48 @@ import (
 	"fmt"
 )
 
+type Board struct {
+	layout [][]string
+}
+
+func (b *Board) printBoard() {
+	for _, row := range b.layout {
+		fmt.Println(row)
+	}
+	fmt.Println()
+}
+
+func (b *Board) checkWin() bool {
+	return checkRows(b.layout)
+}
+
+func (b *Board) updateBoard(row, col, playerTurn int) {
+	if playerTurn == 1 {
+		b.layout[row-1][col-1] = "X"
+	} else {
+		b.layout[row-1][col-1] = "O"
+	}
+}
+
 func main() {
 	gameOver := false
 
-	board := [][]string{
-		{"-", "-", "-"},
-		{"-", "-", "-"},
-		{"-", "-", "-"},
+	board := Board{
+		layout: [][]string{
+			{"-", "-", "-"},
+			{"-", "-", "-"},
+			{"-", "-", "-"},
+		},
 	}
 
-	playerturn := 1
+	playerTurn := 1
 
 	fmt.Println("Welcome to Tic Tac Go!\n")
 
 	for !gameOver {
 		// print board
-		printBoard(board)
-
+		board.printBoard()
+		
 		// get input
 		var row, col int
 
@@ -43,36 +68,38 @@ func main() {
             continue
         }
 
-		if board[row-1][col-1] != "-" {
+		if board.layout[row-1][col-1] != "-" {
 			fmt.Println("That spot is already taken, please choose another.")
 			continue
 		}
 
 		// update board
-		if playerturn == 1 {
-			board[row-1][col-1] = "X"
-		} else {
-			board[row-1][col-1] = "O"
-		}
+		board.updateBoard(row, col, playerTurn)
 
 		// check for win
+		if board.checkWin() {
+			board.printBoard()
+			fmt.Println("You win!")
+			break
+		}
 
 		// check for draw
 
 		// switch player
+		if playerTurn == 1 {
+			playerTurn = 2
+		} else {
+			playerTurn = 1
+		}
 	}
 
 	
 	fmt.Println("You win!")
 }
 
-func checkWin() bool {
-	return true
-}
-
-func printBoard(board [][]string) {
-	for _, row := range board {
-		fmt.Println(row)
+func checkRows(board [][]string) bool {
+	if board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][0] != "-" {
+		return true
 	}
-	fmt.Println()
+	return false
 }
