@@ -118,7 +118,6 @@ func checkRows(board [][]string) bool {
 	return false
 }
 
-// function to check columns
 func checkColumns(board [][]string) bool {
 	for i, _ := range board {
 		if board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[0][i] != "-" {
@@ -129,7 +128,6 @@ func checkColumns(board [][]string) bool {
 	return false
 }
 
-// function to check diagonals
 func checkDiagonals(board [][]string) bool {
 	if board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != "-" {
 		return true
