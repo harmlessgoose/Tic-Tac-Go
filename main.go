@@ -59,16 +59,16 @@ func main() {
 	fmt.Println("Welcome to Tic Tac Go!\n")
 
 	for !gameOver {
-		// print board
 		board.printBoard()
 
-		// get input
 		row, col := getInput()
+		if board.layout[row-1][col-1] != "-" {
+			fmt.Println("That space is already taken!")
+			continue
+		}
 
-		// update board
 		board.updateBoard(row, col, playerTurn)
 
-		// check for win
 		if board.checkWin() {
 			board.printBoard()
 			fmt.Println("You win!")
@@ -84,8 +84,6 @@ func main() {
 			playerTurn = 1
 		}
 	}
-
-	
 }
 
 func checkRows(board [][]string) bool {
