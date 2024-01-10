@@ -8,6 +8,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 type Board struct {
@@ -62,25 +63,7 @@ func main() {
 		board.printBoard()
 
 		// get input
-		var row, col int
-
-		fmt.Print("Enter two numbers for the row and column (e.g., 1 3): ")
-        _, err := fmt.Scan(&row, &col)
-
-		if row < 1 || row > 3 || col < 1 || col > 3 {
-			fmt.Println("Invalid input, please enter two integers between 1 and 3.")
-			continue
-		}
-
-        if err != nil {
-            fmt.Println("Invalid input, please enter two integers between 1 and 3.")
-            continue
-        }
-
-		if board.layout[row-1][col-1] != "-" {
-			fmt.Println("That spot is already taken, please choose another.")
-			continue
-		}
+		row, col := getInput()
 
 		// update board
 		board.updateBoard(row, col, playerTurn)
@@ -135,4 +118,51 @@ func checkDiagonals(board [][]string) bool {
 		return true
 	}
 	return false 
+}
+
+func getInput() (int, int) {
+
+	var rowWord, colWord string
+	var rowInt, colInt int
+
+    for {
+        fmt.Print("Enter two words (e.g., 'Top left', 'Bottom right', 'Middle middle'): ")
+        _, err := fmt.Scanf("%s %s", &rowWord, &colWord)
+
+        if err != nil {
+            fmt.Println("Invalid input, please enter two words.")
+            continue
+        }
+
+		rowWord = strings.ToLower(rowWord)
+		colWord = strings.ToLower(colWord)
+
+		if rowWord != "top" && rowWord != "middle" && rowWord != "bottom" {
+			fmt.Println("Invalid input, please enter two words.")
+			continue
+		}
+		if colWord != "left" && colWord != "middle" && colWord != "right" {
+			fmt.Println("Invalid input, please enter two words.")
+			continue
+		}
+
+		if rowWord == "top" {
+			rowInt = 1
+		} else if rowWord == "middle" {
+			rowInt = 2
+		} else {
+			rowInt = 3
+		}
+
+		if colWord == "left" {
+			colInt = 1
+		} else if colWord == "middle" {
+			colInt = 2
+		} else {
+			colInt = 3
+		}
+
+        return rowInt, colInt
+    }
+	
 }
