@@ -15,14 +15,14 @@ type Board struct {
 	layout [][]string
 }
 
-func (b *Board) printBoard() {
+func (b Board) printBoard() {
 	for _, row := range b.layout {
 		fmt.Println(row)
 	}
 	fmt.Println()
 }
 
-func (b *Board) updateBoard(row, col, playerTurn int) {
+func (b Board) updateBoard(row, col, playerTurn int) {
 	if playerTurn == 1 {
 		b.layout[row-1][col-1] = "X"
 	} else {
@@ -30,7 +30,7 @@ func (b *Board) updateBoard(row, col, playerTurn int) {
 	}
 }
 
-func (b *Board) checkWin() bool {
+func (b Board) checkWin() bool {
 	if checkRows(b.layout) {
 		return true
 	}
@@ -43,7 +43,7 @@ func (b *Board) checkWin() bool {
 	return false
 }
 
-func (b *Board) checkDraw() bool {
+func (b Board) checkDraw() bool {
 	for _, row := range b.layout {
 		for _, col := range row {
 			if col == "-" {
