@@ -12,17 +12,17 @@ import (
 )
 
 type Board struct {
-	layout [][]string
+	layout [3][3]string
 }
 
-func (b Board) printBoard() {
+func (b *Board) printBoard() {
 	for _, row := range b.layout {
 		fmt.Println(row)
 	}
 	fmt.Println()
 }
 
-func (b Board) updateBoard(row, col, playerTurn int) {
+func (b *Board) updateBoard(row, col, playerTurn int) {
 	if playerTurn == 1 {
 		b.layout[row-1][col-1] = "X"
 	} else {
@@ -30,7 +30,7 @@ func (b Board) updateBoard(row, col, playerTurn int) {
 	}
 }
 
-func (b Board) checkWin() bool {
+func (b *Board) checkWin() bool {
 	if checkRows(b.layout) {
 		return true
 	}
@@ -43,7 +43,7 @@ func (b Board) checkWin() bool {
 	return false
 }
 
-func (b Board) checkDraw() bool {
+func (b *Board) checkDraw() bool {
 	for _, row := range b.layout {
 		for _, col := range row {
 			if col == "-" {
@@ -55,10 +55,11 @@ func (b Board) checkDraw() bool {
 }
 
 func main() {
+	// This variable isn't actually used, but it's nice to have it for readability :)
 	gameOver := false
 
 	board := Board{
-		layout: [][]string{
+		layout: [3][3]string{
 			{"-", "-", "-"},
 			{"-", "-", "-"},
 			{"-", "-", "-"},
@@ -90,12 +91,14 @@ func main() {
 		if board.checkWin() {
 			board.printBoard()
 			fmt.Println("You win!")
+			gameOver = true
 			break
 		}
 
 		if board.checkDraw() {
 			board.printBoard()
 			fmt.Println("It's a draw!")
+			gameOver = true
 			break
 		}
 
@@ -108,7 +111,7 @@ func main() {
 	}
 }
 
-func checkRows(board [][]string) bool {
+func checkRows(board [3][3]string) bool {
 	for i, _ := range board {
 		if board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][0] != "-" {
 			return true
@@ -118,7 +121,7 @@ func checkRows(board [][]string) bool {
 	return false
 }
 
-func checkColumns(board [][]string) bool {
+func checkColumns(board [3][3]string) bool {
 	for i, _ := range board {
 		if board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[0][i] != "-" {
 			return true
@@ -128,7 +131,7 @@ func checkColumns(board [][]string) bool {
 	return false
 }
 
-func checkDiagonals(board [][]string) bool {
+func checkDiagonals(board [3][3]string) bool {
 	if board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != "-" {
 		return true
 	}
